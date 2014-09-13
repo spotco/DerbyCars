@@ -46,9 +46,14 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\CameraControl.cs" />
      <Compile Include="Assets\Scripts\CarControlScript.cs" />
      <Compile Include="Assets\Scripts\FollowPlayerCar.cs" />
+     <Compile Include="Assets\Scripts\PathMaker.cs" />
+     <Compile Include="Assets\Scripts\PlayerControl.cs" />
      <Compile Include="Assets\Scripts\RotateX.cs" />
+     <Compile Include="Assets\Scripts\ShiftStickUI.cs" />
+     <Compile Include="Assets\Scripts\SteeringUI.cs" />
      <Compile Include="Assets\Scripts\Util.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

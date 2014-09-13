@@ -7,6 +7,8 @@ public class CarControlScript : MonoBehaviour {
 	public Rigidbody _body;
 	public GameObject _backwards, _up;
 
+	public SteeringUI steeringUI;
+
 	void Start () {
 		_body = gameObject.GetComponent<Rigidbody>();
 		_backwards = Util.FindInHierarchy(this.gameObject,"Backwards");
@@ -15,28 +17,24 @@ public class CarControlScript : MonoBehaviour {
 
 
 	void Update () {
-		Debug.Log(this.get_from_flat_angle());
-		if (Input.GetKey(KeyCode.W)) {
+		if (Input.GetKey(KeyCode.Space)) {
 			if (_instanceid_to_collision_normal.Count > 0 && is_flat()) {
-								foreach (Vector3 normal in _instanceid_to_collision_normal.Values) {
-									Debug.Log(normal);
-								}
 				Vector3 move_dir = Util.vec_scale(Util.vec_sub(this.gameObject.transform.position,_backwards.transform.position).normalized,35);
+				//move_dir = Util.vec_scale(move_dir,50);
+				//_body.AddForce(move_dir);
 				_body.velocity = move_dir;
 			}
 
-		} 
-		if (Input.GetKey(KeyCode.A)) {
-			if (_instanceid_to_collision_normal.Count > 0 && is_flat()) {
-				_body.transform.Rotate(0,0,-2);
-			}
+		}
 
-		} 
-		if (Input.GetKey(KeyCode.D)) {
-						if (_instanceid_to_collision_normal.Count > 0 && is_flat()) {
-				_body.transform.Rotate(0,0,2);
+		float steering = steeringUI.angle;
+		if (Mathf.Abs(steering) > 1) {
+			if (_instanceid_to_collision_normal.Count > 0 && is_flat()) {
+				_body.transform.Rotate(0,0,10 * steering/360);
 			}
 		}
+
+
 		if (Input.GetKey(KeyCode.R)) {
 			this.transform.position = Util.vec(-4.657434f,-23.28292f,-78.73008f);
 			this.transform.eulerAngles = new Vector3(270,0,0);
@@ -70,6 +68,6 @@ public class CarControlScript : MonoBehaviour {
 
 	void OnCollisionExit(Collision col) {
 		if (_instanceid_to_collision_normal.ContainsKey(col.collider.GetInstanceID()))
-		_instanceid_to_collision_normal.Remove(col.collider.GetInstanceID());
+			_instanceid_to_collision_normal.Remove(col.collider.GetInstanceID());
 	}
 }
