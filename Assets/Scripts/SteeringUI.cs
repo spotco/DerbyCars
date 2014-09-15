@@ -60,8 +60,8 @@ public class SteeringUI : MonoBehaviour {
 
 			angle = startAngle + deltaSteeringAngle;
 
-			angle = Mathf.Min(angle, 360);
-			angle = Mathf.Max(angle, -360);
+			angle = Mathf.Min(angle, 180);
+			angle = Mathf.Max(angle, -180);
 
 			// this allows us to spin the wheel multiple times
 			startAngle = angle;

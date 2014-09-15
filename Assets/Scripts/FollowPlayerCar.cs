@@ -17,8 +17,15 @@ public class FollowPlayerCar : MonoBehaviour {
 	}
 
 	float _pct_to_away_cam = 0;
+	float _in_air_ct = 0;
 	void Update () {
-		if (_control.get_from_flat_angle()<1.5f || _control._instanceid_to_collision_normal.Count == 0) {
+		if (_control._instanceid_to_collision_normal.Count == 0) {
+			_in_air_ct++;
+		} else {
+			_in_air_ct/=2;
+		}
+
+		if (_control.get_from_flat_angle()<1.9f || _in_air_ct > 20) {
 			_pct_to_away_cam =_pct_to_away_cam +  (1-_pct_to_away_cam)/15.0f;
 		} else {
 			_pct_to_away_cam *= 0.96f;
@@ -28,7 +35,7 @@ public class FollowPlayerCar : MonoBehaviour {
 			_follow.transform.position,
 			Util.vec_add(
 				Util.vec(0,20,0),
-				Util.vec_scale(Util.vec_sub(_backwards.transform.position,_follow.transform.position).normalized,25)
+				Util.vec_scale(Util.vec_sub(_backwards.transform.position,_follow.transform.position).normalized,35)
 			)
 		);
 
@@ -36,7 +43,7 @@ public class FollowPlayerCar : MonoBehaviour {
 			_follow.transform.position,
 			Util.vec_add(
 				Util.vec_scale(Util.vec_sub(_up.transform.position,_follow.transform.position).normalized,10),
-				Util.vec_scale(Util.vec_sub(_backwards.transform.position,_follow.transform.position).normalized,20)
+				Util.vec_scale(Util.vec_sub(_backwards.transform.position,_follow.transform.position).normalized,30)
 			)
 		);
 
@@ -44,6 +51,6 @@ public class FollowPlayerCar : MonoBehaviour {
 		back_cam.y = (away_cam.y - back_cam.y)*_pct_to_away_cam + back_cam.y;
 		back_cam.z = (away_cam.z - back_cam.z)*_pct_to_away_cam + back_cam.z;
 		this.gameObject.transform.position = back_cam;
-		this.gameObject.transform.LookAt(_follow.transform.position);
+		this.gameObject.transform.LookAt(_follow.transform.position,new Vector3(0,1,0));
 	}
 }
